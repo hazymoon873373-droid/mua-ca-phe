@@ -4,7 +4,7 @@ Website mới theo dõi giá cà phê Robusta theo vùng, lịch sử và giá b
 
 ## Chức năng
 - Bảng giá tham khảo bốn vùng từ Giacaphe.com, ghi riêng ngày nguồn và lần kiểm tra.
-- Bộ lấy dữ liệu chạy ở máy chủ, giới hạn tối đa một lần/giờ; lưu dữ liệu hợp lệ vào Cloudflare D1. Giữ bản giá đã có khi nguồn lỗi, không vượt qua trang bị từ chối truy cập.
+- Bộ lấy dữ liệu chạy ở máy chủ, nhịp đọc thông thường một lần/giờ; lượt bị ngắt được phép phục hồi sau năm phút; lưu dữ liệu hợp lệ vào Cloudflare D1. Giữ bản giá đã có khi nguồn lỗi, không vượt qua trang bị từ chối truy cập.
 - Lịch sử 5.445 quan sát thật từ Mendeley V3, theo năm vùng. Bộ lịch sử và giá thu thập mới được chọn riêng, không ghép thành một đường liên tục.
 - Biểu đồ tương tác bằng chuột/bàn phím, khoảng 7/30/90 ngày, 1 năm hoặc toàn bộ dữ liệu của nguồn đã chọn; tải CSV, bảng quan sát phân trang và bảng tháng có ô thiếu.
 - Tối đa năm ngưỡng giá lưu trên thiết bị, có xóa/hoàn tác. Đây là đối chiếu trong web lúc mở, chưa có thông báo đẩy.

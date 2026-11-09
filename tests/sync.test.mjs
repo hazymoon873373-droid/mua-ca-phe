@@ -48,6 +48,26 @@ function database() {
   return db;
 }
 const now = Date.parse("2026-11-09T15:00:00Z");
+test("an interrupted source refresh can recover after five minutes instead of locking for an hour", async () => {
+  const db = database();
+  await db
+    .prepare(
+      "INSERT INTO source_state(source,last_attempt) VALUES('giacaphe',?)",
+    )
+    .bind(now)
+    .run();
+  const early = await syncPriceSource(db, {
+    fetcher: async () => new Response(html),
+    now: now + 60000,
+  });
+  assert.equal(early.reason, "cached");
+  const recovered = await syncPriceSource(db, {
+    fetcher: async () => new Response(html),
+    now: now + 300001,
+  });
+  assert.equal(recovered.refreshed, true);
+  assert.equal((await readStoredMarket(db)).regions.length, 4);
+});
 test("source sync persists one verified row per day/region and rate-limits all callers", async () => {
   const db = database();
   let calls = 0;

@@ -1,10 +1,11 @@
 import { env } from "cloudflare:workers";
 import { syncPriceSource, readStoredMarket } from "./sync.mjs";
+import { retainPriceRefresh } from "./execution.mjs";
 import seed from "../../public/data/latest.json";
 export async function marketData() {
   try {
     if (!env.DB) throw new Error("Database unavailable");
-    const refresh = await syncPriceSource(env.DB);
+    const refresh = await retainPriceRefresh(syncPriceSource(env.DB));
     const stored = await readStoredMarket(env.DB);
     if (stored.regions.length)
       return { ...stored, storageReady: true, refresh };
