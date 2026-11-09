@@ -1,0 +1,61 @@
+/* Hallmark · shape: app screen · genre: editorial · theme: Almanac · states: static document · v2.0.0 */
+/* Hallmark · pre-emit critique: a readable attribution document using the application's paper and ink. */
+:root {
+  --paper: oklch(84% 0.012 245);
+  --ink: oklch(16% 0.02 245);
+  --accent: oklch(45% 0.18 350);
+  --font-body: "Hanken Grotesk", system-ui, sans-serif;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/hanken-400.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+html,
+body {
+  overflow-x: clip;
+}
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  margin: 0;
+  padding: var(--space-lg);
+}
+main {
+  max-width: 820px;
+  margin: auto;
+}
+h1,
+h2 {
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  min-width: 0;
+  font-weight: 400;
+}
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.4rem;
+  margin-top: var(--space-xl);
+}
+a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "historical": {
+    "sourceId": "mendeley-v3",
+    "title": "VNCoffeePrice: A Multi-Source Dataset for Robusta Coffee Price Forecasting in Vietnam (2020–2026)",
+    "authors": [
+      "Tan Nguyen Duc",
+      "Hai Nguyen Chi"
+    ],
+    "sourceUrl": "https://data.mendeley.com/datasets/p8fhcw59b7/3",
+    "doi": "10.17632/p8fhcw59b7.3",
+    "version": 3,
+    "publishedDate": "2026-07-23",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "archiveFilename": "VNCoffeePrice_mendeley_package_ENv2.zip",
+    "archiveSha256": "04c2be944c8b31b78beb180f78412be9967232e9c1ddb3083962c04274b4b7d2",
+    "upstreamCsv": "vietnam_coffee_price_dataset.csv",
+    "upstreamCsvSha256": "d6c18f2bee64a94df61205586e3fe58530116e681aedede7c7d1fc722f2497c2",
+    "upstreamRows": 5445,
+    "upstreamColumns": [
+      "date",
+      "split",
+      "province",
+      "commodity",
+      "coffee_price_vnd_kg",
+      "london_price_usd_ton",
+      "usd_vnd_rate",
+      "london_price_vnd_kg",
+      "domestic_london_price_gap_vnd_kg",
+      "brent_price_usd_barrel",
+      "wti_price_usd_barrel",
+      "brent_price_vnd_liter_converted",
+      "wti_price_vnd_liter_converted",
+      "ron95_price_vnd_liter",
+      "e5ron92_price_vnd_liter",
+      "diesel_price_vnd_liter",
+      "kerosene_price_vnd_liter",
+      "temperature_2m_mean",
+      "temperature_2m_min",
+      "temperature_2m_max",
+      "precipitation_sum",
+      "rain_sum",
+      "lat",
+      "lon",
+      "coord_source"
+    ],
+    "coverage": [
+      {
+        "regionId": "dak-lak",
+        "startDate": "2020-01-01",
+        "endDate": "2026-05-22",
+        "observationCount": 1613
+      },
+      {
+        "regionId": "lam-dong",
+        "startDate": "2020-01-01",
+        "endDate": "2026-05-22",
+        "observationCount": 1616
+      },
+      {
+        "regionId": "gia-lai",
+        "startDate": "2021-03-01",
+        "endDate": "2026-05-22",
+        "observationCount": 801
+      },
+      {
+        "regionId": "dak-nong",
+        "startDate": "2021-03-01",
+        "endDate": "2026-01-16",
+        "observationCount": 721
+      },
+      {
+        "regionId": "kon-tum",
+        "startDate": "2021-03-01",
+        "endDate": "2026-01-16",
+        "observationCount": 694
+      }
+    ],
+    "transformation": "Only date, province and domestic coffee_price_vnd_kg retained; province IDs normalized. All 5,445 values verified against raw train/val/test domestic files. No interpolation, averaging, or forward/backward filling.",
+    "limitations": [
+      "The publisher does not establish official-statistics-grade provenance for the original domestic coffee price series; independently verify before relying on it.",
+      "Dates are irregular and coverage differs by region. Dak Nong and Kon Tum stop on 2026-01-16; the other three end on 2026-05-22.",
+      "Exogenous fields in the upstream merged dataset were forward/backward filled; these fields are excluded here. Domestic prices were not filled by the build script.",
+      "The archive README contains a provisional license note and an older DOI; the public version-3 landing page explicitly declares CC BY 4.0 and DOI 10.17632/p8fhcw59b7.3."
+    ]
+  },
+  "latest": {
+    "sourceId": "giacaphe-snapshot",
+    "sourceUrl": "https://giacaphe.com/gia-ca-phe-noi-dia/",
+    "attribution": "Giá tham khảo trong nước: Giacaphe.com / Y5Cafe",
+    "sourceLicenseUnconfirmed": true,
+    "limitations": [
+      "One public snapshot only; no permission or service agreement for ongoing republication has been established.",
+      "The first linked historical page returned HTTP 403; collection stopped without bypass. No recent daily history is available.",
+      "Quoted reference prices may differ from actual local transactions. Fetch time and source observation date are distinct."
+    ]
+  },
+  "methodology": {
+    "sourcesKeptSeparate": true,
+    "missingObservationsFilled": false,
+    "forecastIncluded": false,
+    "seasonality": "For one region and one historical source, use only calendar years with observations in all 12 months. Compute each monthly observed-price mean, divide by the equal-month annual mean, subtract 1, and average percentage deviations across eligible years. This describes historical patterns, not a price forecast or trading recommendation."
+  }
+}

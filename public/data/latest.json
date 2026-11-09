@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "giacaphe-snapshot",
+  "sourceDate": "2026-11-09",
+  "regions": [
+    {
+      "regionId": "dak-lak",
+      "name": "Đắk Lắk",
+      "priceVndKg": 85000,
+      "changeVndKg": 500
+    },
+    {
+      "regionId": "lam-dong",
+      "name": "Lâm Đồng",
+      "priceVndKg": 84500,
+      "changeVndKg": 500
+    },
+    {
+      "regionId": "gia-lai",
+      "name": "Gia Lai",
+      "priceVndKg": 85000,
+      "changeVndKg": 500
+    },
+    {
+      "regionId": "dak-nong",
+      "name": "Đắk Nông",
+      "priceVndKg": 85300,
+      "changeVndKg": 600
+    }
+  ],
+  "sourceUrl": "https://giacaphe.com/gia-ca-phe-noi-dia/",
+  "fetchedAt": "2026-11-09T15:44:21.749Z",
+  "sourceAttribution": "Giacaphe.com / Y5Cafe — giá tham khảo trong nước",
+  "sourceLicenseUnconfirmed": true,
+  "collectionMode": "single-public-page-snapshot"
+}

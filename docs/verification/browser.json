@@ -1,0 +1,21 @@
+{
+  "executedAt": "2026-11-09T16:22:13.733Z",
+  "base": "http://127.0.0.1:5182/",
+  "checks": [
+    "New Vietnamese site, four actual source regions, local Hanken font loaded",
+    "Real API backed by initialized D1 store, four validated regions",
+    "Date windows anchored to selected historical coverage; Kon Tum does not pretend May coverage",
+    "Keyboard chart inspection updates an accessible live readout",
+    "Filtered source-separated CSV download",
+    "New source with one day has no fabricated trend or joined historical line",
+    "History table pagination and real missing-month cells",
+    "Watch thresholds persist locally, remove and undo work",
+    "Storage-failure fixture cannot regress newer displayed prices to old seed",
+    "Network failure keeps existing displayed prices",
+    "360/768/1440/1920 layouts, no clipped controls or page overflow",
+    "Keyboard skip link reaches market",
+    "Published credit and provenance documents reachable"
+  ],
+  "errors": [],
+  "limitations": "Storage/network failures use explicit fixtures; actual API/D1 read exercised separately. No assistive-technology user study."
+}
