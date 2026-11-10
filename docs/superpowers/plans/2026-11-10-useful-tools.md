@@ -1,0 +1,9 @@
+# Công cụ lô hàng thay màn hình kiểm định
+
+User requested removing the public forecast/validation dashboard and replacing it with useful working functions. Keep existing Almanac design, actual prices, history, watches and public audience. Implement directly, no new dependencies/services.
+
+1. Replace ForecastPanel mount and forecast nav with LotTools. Delete unused forecast-panel.tsx and forecast-only CSS; retain actual trained artifacts, pipeline, API and domain tests. Model limits and raw results remain a small source disclosure, no current forecast claim.
+2. Add lib/coffee/lots.mjs: bounded gram-precision weight and integer-VND arithmetic, seller proceeds/buyer total, source-dated region comparisons, local record validation and escaped CSV. Reuse shared csvCell from analytics.mjs. Test money bounds, kg/ton equivalence, missing prices, manual/reference provenance and storage/CSV inputs before implementation.
+3. Add app/components/lot-tools.tsx and app/lot-tools.css: kg/ton form, selected source or manual unit price, cost, calculation, four-region comparison, local lot notebook (max50), download, delete/undo, unavailable/error/empty states. Quote value and user-entered price labelled separately; estimates are not profit, invoices or binding offers. No automatic region arbitrage/buy/sell recommendations.
+4. Preserve source-price date/URL with each reference record. Freeze saved inputs/results when prices change. No account, server storage, cross-device sync or sensitive counterparty details. Catch storage failures and preserve session records; don't silently overwrite corrupt stored records.
+5. Update metadata, README and obsolete browser checks. Node tests, typecheck, original browser regression, new tools/empty/error/storage/mobile flows, visual QA and independent review. Fix observed issues then build/package exact source and deploy existing public Site. Verify production functionality and prices.

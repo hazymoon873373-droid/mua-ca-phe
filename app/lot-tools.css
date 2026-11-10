@@ -1,0 +1,293 @@
+/* Hallmark · component: lot calculator and notebook · genre: editorial · theme: Almanac · states: empty/invalid/ready/saved/storage-error · v2.0.0 */
+.lot-section {
+  margin-top: var(--space-2xl);
+  padding-top: 32px;
+  border-top: 2px solid var(--color-rule-2);
+  min-width: 0;
+}
+.lot-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+.lot-fields {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+.lot-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font-size: 13px;
+  color: var(--color-muted);
+  min-width: 0;
+}
+.lot-fields input,
+.lot-fields select {
+  width: 100%;
+  min-width: 0;
+}
+.lot-wide {
+  grid-column: 1/-1;
+}
+.lot-price-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.lot-input-note,
+.lot-save span,
+.lot-note {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+.lot-input-note {
+  display: block;
+  max-width: 70ch;
+}
+.lot-fields .text-button {
+  align-self: flex-start;
+  padding: 0;
+  min-height: 36px;
+}
+.lot-save {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+.lot-result {
+  background: var(--color-sheet);
+  border-top: 2px solid var(--color-rule-2);
+  padding: var(--space-xl);
+  align-self: start;
+  min-width: 0;
+}
+.lot-result h3 {
+  font-size: 18px;
+}
+.lot-total {
+  font-family: var(--font-outlier);
+  font-size: clamp(24px, 3vw, 38px);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+  margin-block: var(--space-lg);
+  overflow-wrap: anywhere;
+}
+.lot-result dl {
+  margin-block: var(--space-lg);
+}
+.lot-result dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--color-rule);
+  padding-block: var(--space-sm);
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.lot-result dt {
+  color: var(--color-muted);
+}
+.lot-result dd {
+  margin: 0;
+  font-family: var(--font-outlier);
+}
+.lot-note {
+  line-height: 1.6;
+  max-width: 65ch;
+}
+.lot-comparison,
+.lot-notebook {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-rule-2);
+}
+.lot-comparison h3,
+.lot-notebook h3 {
+  font-size: 21px;
+}
+.lot-comparison > p,
+.lot-book-heading p {
+  font-size: 14px;
+  color: var(--color-muted);
+  max-width: 75ch;
+  margin-top: var(--space-xs);
+}
+.lot-comparison table {
+  min-width: 510px;
+}
+.lot-comparison tbody th {
+  color: var(--color-ink);
+  font-weight: 500;
+}
+.lot-comparison th:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--color-paper);
+}
+.lot-section [tabindex]:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+.lot-book-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  align-items: center;
+}
+.lot-empty {
+  font-size: 14px;
+  padding-block: var(--space-lg);
+  color: var(--color-muted);
+  max-width: 70ch;
+}
+.lot-error {
+  color: var(--color-negative);
+  font-size: 13px;
+  margin-top: var(--space-sm);
+}
+.lot-status {
+  font-size: 14px;
+  max-width: 75ch;
+  margin-block: var(--space-md);
+}
+.lot-status .text-button {
+  margin-left: var(--space-md);
+}
+.lot-records {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lot-records > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-lg);
+  border-bottom: 1px solid var(--color-rule);
+  padding-block: var(--space-lg);
+}
+.lot-records h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.lot-records p {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-top: var(--space-xs);
+}
+.lot-records strong {
+  font-family: var(--font-outlier);
+  font-size: 18px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.lot-record-note {
+  color: var(--color-ink) !important;
+  overflow-wrap: anywhere;
+}
+.volatility-alert {
+  grid-column: 1/-1;
+  border-top: 1px solid var(--color-inverse-rule);
+  padding-top: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+.volatility-alert h3 {
+  font-size: 18px;
+  color: var(--color-sheet);
+}
+.volatility-alert label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-block: var(--space-md);
+  color: var(--color-inverse-muted);
+  font-size: 14px;
+}
+.volatility-alert input {
+  width: 90px;
+  color: var(--color-sheet);
+  background: var(--color-ink-2);
+  border-color: var(--color-inverse-muted);
+}
+.volatility-alert ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+}
+.volatility-alert li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+  font-size: 14px;
+  padding-block: var(--space-xs);
+  border-bottom: 1px solid var(--color-inverse-rule);
+  flex-wrap: wrap;
+}
+.volatility-alert li strong {
+  font-family: var(--font-outlier);
+  font-weight: 500;
+}
+.volatility-alert li small {
+  width: 100%;
+  color: var(--color-inverse-muted);
+}
+.volatility-alert > p {
+  font-size: 12px;
+  color: var(--color-inverse-muted);
+  margin-top: var(--space-sm);
+}
+@media (max-width: 900px) {
+  .lot-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lot-result {
+    padding: var(--space-lg);
+  }
+}
+@media (max-width: 600px) {
+  .lot-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lot-book-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .lot-records > li {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-md);
+  }
+  .lot-record-main {
+    grid-column: 1/-1;
+  }
+  .volatility-alert ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (min-width: 761px) and (max-width: 900px) {
+  .site-header {
+    flex-wrap: wrap;
+  }
+  .site-header nav {
+    order: 3;
+    width: 100%;
+    white-space: nowrap;
+    justify-content: space-between;
+  }
+  .header-watch {
+    margin-left: auto;
+  }
+}

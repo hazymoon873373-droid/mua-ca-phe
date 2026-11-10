@@ -13,7 +13,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import PriceChart from "./components/price-chart";
-import ForecastPanel from "./components/forecast-panel";
+import LotTools from "./components/lot-tools";
 import { REGIONS } from "../lib/coffee/source.mjs";
 import { sanitizeHistory, monthlyAverages } from "../lib/coffee/history.mjs";
 import {
@@ -272,7 +272,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
           <a href="#thi-truong">Thị trường</a>
           <a href="#lich-su">Lịch sử</a>
           <a href="#mua-vu">Theo tháng</a>
-          <a href="#du-bao">Dự báo</a>
+          <a href="#lo-hang">Tính lô hàng</a>
           <a href="#nguon">Nguồn dữ liệu</a>
         </nav>
         <a href="#theo-doi" className="header-watch">
@@ -664,7 +664,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
             quy luật mùa vụ.
           </p>
         </section>
-        <ForecastPanel regionId={region} onRegionChange={setRegion} />
+        <LotTools quotes={market.regions} sourceDate={market.sourceDate} />
         <section
           id="theo-doi"
           className="watch-section"
@@ -880,6 +880,21 @@ export default function Dashboard({ initial }: { initial: Market }) {
             </p>
           </div>
           <div className="source-register">
+            <details>
+              <summary>Thông tin mô hình nghiên cứu</summary>
+              <p>
+                Prophet và XGBoost đã được thử nghiệm trên lịch sử Đắk Lắk và
+                Lâm Đồng. Đợt kiểm định hiện tại chưa vượt phương án giữ nguyên
+                giá gần nhất; dữ liệu huấn luyện kết thúc ngày 22/05/2026. Web
+                chưa cung cấp dự báo giá hiện tại.
+              </p>
+              <a
+                href="/data/forecast.json"
+                download="mua-ca-phe-ket-qua-mo-hinh.json"
+              >
+                Tải kết quả nghiên cứu mô hình
+              </a>
+            </details>
             <article>
               <div>
                 <h3>Giacaphe.com / Y5Cafe</h3>

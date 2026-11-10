@@ -9,8 +9,9 @@ Website mới theo dõi giá cà phê Robusta theo vùng, lịch sử và giá b
 - Biểu đồ tương tác bằng chuột/bàn phím, khoảng 7/30/90 ngày, 1 năm hoặc toàn bộ dữ liệu của nguồn đã chọn; tải CSV, bảng quan sát phân trang và bảng tháng có ô thiếu.
 - Tối đa năm ngưỡng giá lưu trên thiết bị, có xóa/hoàn tác. Đây là đối chiếu trong web lúc mở, chưa có thông báo đẩy.
 - Cảnh báo mức biến động phần trăm theo thay đổi mà nguồn công bố, ngưỡng 0,1–50% lưu trên thiết bị; luôn gắn ngày của bản giá.
-- Mục dự báo có hai mô hình thật Prophet/XGBoost và mốc so sánh giữ nguyên giá. Mỗi vùng Đắk Lắk/Lâm Đồng dùng 24 mốc kiểm định tiến dần, kỳ hạn đúng 1/7 ngày lịch; hiển thị MAE, RMSE, độ bao phủ khoảng Prophet, biểu đồ và CSV giá thật/dự đoán.
-- Dự báo giá hiện tại được giữ lại khi mốc huấn luyện cũ hoặc mô hình chưa có bằng chứng vượt mốc so sánh. Kết quả lịch sử không được đổi nhãn thành dự báo hôm nay.
+- Công cụ lô hàng: đổi kg/tấn, giá tham khảo hoặc giá tự nhập, tiền bán sau chi phí/ngân sách thu mua, so sánh cùng khối lượng theo vùng. Tính theo gram và đồng nguyên, không gọi số tiền sau chi phí là lợi nhuận.
+- Sổ tối đa 50 lô lưu trên trình duyệt, giữ nguyên đơn giá/ngày nguồn lúc lưu, ghi chú, tải CSV, xóa/hoàn tác. Không đồng bộ thiết bị; lỗi lưu được thông báo và cho tải bản trong phiên. Dữ liệu lưu hỏng không bị tự ghi đè.
+- Đã bỏ dashboard kiểm định khỏi luồng chính theo yêu cầu; các mô hình thật Prophet/XGBoost, pipeline, API và raw artifact giữ trong phần nghiên cứu. Thông tin ngắn và đường tải nằm trong mục nguồn, không cung cấp dự báo giá hiện tại chưa đủ điều kiện.
 - Giao diện Hallmark Almanac, phông Hanken Grotesk lưu cục bộ, giá dạng số thẳng cột, ảnh có attribution.
 
 ## Chạy và kiểm tra
@@ -43,9 +44,9 @@ Mở http://127.0.0.1:5182 . Với dev server đang chạy, `npm run test:browse
 
 Đọc `tools/forecasting/README.md` để tạo môi trường Python riêng, cài phiên bản cố định, chạy kiểm tra chống rò rỉ dữ liệu và tái tạo `public/data/forecast.json`. Không có mô hình giả lập hoặc API AI trả phí. Python không chạy trong Worker; JSON được xuất sau huấn luyện rồi phát hành cùng web. Không cung cấp endpoint công khai để chạy training hoặc tải model pickle.
 
-`/api/forecast` kiểm tra hợp lệ artifact và trả ngày hiện tại theo Việt Nam. Giao diện ghi riêng ngày huấn luyện, mốc dự báo, ngày giá thật và ngày phát hành. Mốc huấn luyện cũ quá ba ngày, ngày đích đã qua, ít hơn 20 mẫu hoặc MAE không vượt giá gần nhất sẽ không đủ điều kiện phát hành dự báo hiện tại. Hạn chế dữ liệu chưa được giải quyết chỉ bằng cách huấn luyện thêm mô hình: chuỗi giá gần hiện tại còn thiếu và nguồn Giacaphe không được tự nối với Mendeley.
+`/api/forecast` vẫn kiểm tra hợp lệ artifact và trả ngày hiện tại theo Việt Nam cho mục đích nghiên cứu. Helpers kiểm tra độ mới/chất lượng và dữ liệu đo được giữ nguyên; màn hình kiểm định đã gỡ khỏi trang chính. Dữ liệu gần hiện tại còn thiếu; nguồn Giacaphe không được tự nối với Mendeley hoặc đổi nhãn dự báo lịch sử thành hiện tại.
 
-Kiểm tra bổ sung: `node --test tests/forecast.test.mjs`; với preview đang chạy, `node tests/forecast-browser.mjs`. Raw artifact và CSV là các kết quả thí nghiệm để kiểm tra lại, không phải giá giao dịch.
+Kiểm tra bổ sung: `node --test tests/forecast.test.mjs tests/lots.test.mjs`; với preview đang chạy, `node tests/lots-browser.mjs`. Raw model artifact là kết quả nghiên cứu, không phải giá giao dịch.
 
 ## Triển khai
 Vinext/React và Cloudflare Worker, giữ tích hợp Sites trong `vite.config.ts`/`worker/index.ts`; D1 binding `DB` trong `.openai/hosting.json`. URL dự kiến (chỉ xác nhận live sau deployment thành công): https://mua-ca-phe-vn.cozyspoon36.chatgpt.site . Người dùng đã yêu cầu công khai, ai có link cũng xem được.

@@ -1,0 +1,15 @@
+{
+  "executedAt": "2026-11-10T16:21:09.884Z",
+  "base": "http://127.0.0.1:5182/",
+  "checks": [
+    "Forecast diagnostics removed; kg/ton, sale/buy money calculation, real four-region comparison",
+    "Saved money/provenance frozen across reload; delete/undo restores original record",
+    "Actual CSV download includes record values and escapes formula notes",
+    "Invalid inputs withhold result/save; reference price can be restored explicitly",
+    "Calculator, comparison and notebook fit four viewport widths",
+    "Storage quota failure retains session record and explains CSV fallback",
+    "Corrupt stored data is never silently overwritten",
+    "A changed stored version cannot be overwritten by an older tab"
+  ],
+  "errors": []
+}
