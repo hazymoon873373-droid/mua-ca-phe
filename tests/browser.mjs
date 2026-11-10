@@ -75,21 +75,35 @@ try {
   assert.match((await dl).suggestedFilename(), /\.csv$/);
   checks.push("Filtered source-separated CSV download");
   await page.locator("#history-source").selectOption("giacaphe-snapshot");
-  await page.waitForSelector(".chart-single");
-  assert.match(
-    await page.locator(".chart-single").textContent(),
-    /Một quan sát/,
+  const sourceDays = (market.snapshots || []).filter(
+    (r) => r.regionId === "dak-lak",
   );
+  if (sourceDays.length <= 1) {
+    await page.waitForSelector(".chart-single");
+    assert.match(
+      await page.locator(".chart-single").textContent(),
+      /Một quan sát/,
+    );
+  } else {
+    await page.waitForSelector(".chart-frame");
+    assert.match(
+      await page.locator(".data-period").textContent(),
+      new RegExp(sourceDays[0].date.slice(0, 4)),
+    );
+  }
   checks.push(
-    "New source with one day has no fabricated trend or joined historical line",
+    "New source shows its own actual observations and never joins historical series",
   );
   await page.locator("#history-source").selectOption("mendeley-v3");
   await page.getByRole("button", { name: "Tất cả", exact: true }).click();
   await page.locator(".data-table-details summary").click();
   assert.equal(await page.locator(".data-table-details tbody tr").count(), 20);
-  await page.getByRole("button", { name: "Sau", exact: true }).click();
+  await page
+    .locator(".data-table-details")
+    .getByRole("button", { name: "Sau", exact: true })
+    .click();
   assert.match(
-    await page.locator(".table-pagination").textContent(),
+    await page.locator(".data-table-details .table-pagination").textContent(),
     /Trang 2/,
   );
   assert.equal(await page.locator(".monthly-table tbody tr").count(), 7);
@@ -112,7 +126,7 @@ try {
       json: {
         ...market,
         sourceDate: "2026-11-10",
-        fetchedAt: "2026-11-10T03:00:00Z",
+        fetchedAt: new Date(Date.now() + 1000).toISOString(),
         regions: market.regions.map((r) => ({ ...r, priceVndKg: 88000 })),
         sync: { last_attempt: 1794280000000, error: null },
       },
@@ -215,7 +229,13 @@ try {
   await page.goto(base);
   await page.waitForSelector(".chart-readout");
   await page.evaluate(() => document.fonts.ready);
-  await writeFile(".hallmark/rendered.html", (await page.content()).replace(/href="\/app\/globals\.css"/g,'href="../app/globals.css"'));
+  await writeFile(
+    ".hallmark/rendered.html",
+    (await page.content()).replace(
+      /href="\/app\/globals\.css"/g,
+      'href="../app/globals.css"',
+    ),
+  );
   await page.screenshot({
     path: "test-results/desktop-fold.png",
     fullPage: false,

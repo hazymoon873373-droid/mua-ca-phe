@@ -99,7 +99,9 @@
   "methodology": {
     "sourcesKeptSeparate": true,
     "missingObservationsFilled": false,
-    "forecastIncluded": false,
+    "forecastIncluded": true,
+    "forecastArtifact": "/data/forecast.json",
+    "forecastScope": "Offline Prophet and XGBoost fits with separate Dak Lak/Lam Dong rolling-origin backtests against last-price naive, exact 1/7 calendar-day targets. Historical-origin output is separate from current source prices; stale data withholds live forecasting. Not a trading recommendation.",
     "seasonality": "For one region and one historical source, use only calendar years with observations in all 12 months. Compute each monthly observed-price mean, divide by the equal-month annual mean, subtract 1, and average percentage deviations across eligible years. This describes historical patterns, not a price forecast or trading recommendation."
   }
 }

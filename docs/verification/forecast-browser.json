@@ -1,0 +1,15 @@
+{
+  "executedAt": "2026-11-10T15:58:43.858Z",
+  "base": "http://127.0.0.1:5182/",
+  "checks": [
+    "Actual two-model artifact and API; stale history withholds current forecasts",
+    "Horizon URL, keyboard accessible chart, real CSV, actual/predicted table pagination",
+    "Unsupported regions show honest empty state with supported-region action",
+    "Source-dated percentage thresholds validate and persist locally",
+    "Forecast panel and tables fit four screen widths",
+    "Unavailable/malformed model data is recoverable and leaves price lookup intact",
+    "Malformed rendered metadata cannot crash the price dashboard",
+    "Eligible-state fixture exposes only qualifying model and exact future target date"
+  ],
+  "errors": []
+}

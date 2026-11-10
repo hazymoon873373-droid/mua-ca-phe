@@ -1,13 +1,13 @@
 {
-  "executedAt": "2026-11-09T16:33:03.576Z",
-  "base": "https://mua-ca-phe-vn.cozyspoon36.chatgpt.site/",
+  "executedAt": "2026-11-10T15:58:37.119Z",
+  "base": "http://127.0.0.1:5182/",
   "checks": [
     "New Vietnamese site, four actual source regions, local Hanken font loaded",
     "Real API backed by initialized D1 store, four validated regions",
     "Date windows anchored to selected historical coverage; Kon Tum does not pretend May coverage",
     "Keyboard chart inspection updates an accessible live readout",
     "Filtered source-separated CSV download",
-    "New source with one day has no fabricated trend or joined historical line",
+    "New source shows its own actual observations and never joins historical series",
     "History table pagination and real missing-month cells",
     "Watch thresholds persist locally, remove and undo work",
     "Storage-failure fixture cannot regress newer displayed prices to old seed",

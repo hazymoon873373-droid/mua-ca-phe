@@ -13,6 +13,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import PriceChart from "./components/price-chart";
+import ForecastPanel from "./components/forecast-panel";
 import { REGIONS } from "../lib/coffee/source.mjs";
 import { sanitizeHistory, monthlyAverages } from "../lib/coffee/history.mjs";
 import {
@@ -25,6 +26,7 @@ import {
   evaluateWatch,
   exportCsv,
   mergeMarket,
+  priceMoveAlert,
 } from "../lib/coffee/analytics.mjs";
 type Observation = {
   date: string;
@@ -72,6 +74,8 @@ function downloadRows(rows: Observation[]) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 export default function Dashboard({ initial }: { initial: Market }) {
+  const [movementThreshold, setMovementThreshold] = useState("1");
+  const [movementStorageError, setMovementStorageError] = useState(false);
   const [market, setMarket] = useState<Market>(initial),
     [busy, setBusy] = useState(false),
     [refreshNote, setRefreshNote] = useState(""),
@@ -147,6 +151,11 @@ export default function Dashboard({ initial }: { initial: Market }) {
       if (Array.isArray(raw)) setWatchList(raw.filter(validWatch).slice(0, 5));
     } catch {}
     setWatchLoaded(true);
+    try {
+      const value = localStorage.getItem("mua-ca-phe-change-threshold");
+      if (value && Number(value) >= 0.1 && Number(value) <= 50)
+        setMovementThreshold(value);
+    } catch {}
     const params = new URLSearchParams(location.search);
     const r = params.get("vung"),
       d = Number(params.get("ngay")),
@@ -155,6 +164,16 @@ export default function Dashboard({ initial }: { initial: Market }) {
     if (params.has("ngay") && [7, 30, 90, 365, 0].includes(d)) setDays(d);
     if (s === "giacaphe-snapshot") setSource(s);
   }, []);
+  useEffect(() => {
+    if (!watchLoaded) return;
+    try {
+      if (Number(movementThreshold) >= 0.1 && Number(movementThreshold) <= 50)
+        localStorage.setItem("mua-ca-phe-change-threshold", movementThreshold);
+      setMovementStorageError(false);
+    } catch {
+      setMovementStorageError(true);
+    }
+  }, [movementThreshold, watchLoaded]);
   useEffect(() => {
     if (!watchLoaded) return;
     try {
@@ -253,6 +272,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
           <a href="#thi-truong">Thị trường</a>
           <a href="#lich-su">Lịch sử</a>
           <a href="#mua-vu">Theo tháng</a>
+          <a href="#du-bao">Dự báo</a>
           <a href="#nguon">Nguồn dữ liệu</a>
         </nav>
         <a href="#theo-doi" className="header-watch">
@@ -644,6 +664,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
             quy luật mùa vụ.
           </p>
         </section>
+        <ForecastPanel regionId={region} onRegionChange={setRegion} />
         <section
           id="theo-doi"
           className="watch-section"
@@ -780,6 +801,66 @@ export default function Dashboard({ initial }: { initial: Market }) {
                 })
               )}
             </div>
+          </div>
+          <div className="volatility-alert">
+            <h3>Cảnh báo mức biến động</h3>
+            <label>
+              Ngưỡng thay đổi tuyệt đối (%)
+              <input
+                aria-label="Ngưỡng biến động phần trăm"
+                type="number"
+                min="0.1"
+                max="50"
+                step="0.1"
+                value={movementThreshold}
+                onChange={(e) => setMovementThreshold(e.target.value)}
+              />
+            </label>
+            {!(
+              Number(movementThreshold) >= 0.1 &&
+              Number(movementThreshold) <= 50
+            ) ? (
+              <p role="alert">Nhập ngưỡng từ 0,1 đến 50%.</p>
+            ) : (
+              <ul aria-live="polite">
+                {market.regions.map((q) => {
+                  const move = priceMoveAlert(q, Number(movementThreshold));
+                  return (
+                    <li key={q.regionId}>
+                      <span>{q.name}</span>
+                      <strong>
+                        {move
+                          ? new Intl.NumberFormat("vi-VN", {
+                              signDisplay: "always",
+                              maximumFractionDigits: 2,
+                            }).format(move.changePct) + "%"
+                          : "Chưa tính được"}
+                      </strong>
+                      <small>
+                        {!move
+                          ? "Chưa đủ dữ liệu"
+                          : move.triggered
+                            ? "Đã đạt ngưỡng biến động"
+                            : "Chưa đạt ngưỡng"}
+                        {stale ? " — dữ liệu chưa mang ngày hôm nay" : ""}
+                      </small>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            {movementStorageError && (
+              <p role="status">
+                Trình duyệt không lưu được tùy chọn; ngưỡng biến động chỉ có
+                hiệu lực trong lần mở này.
+              </p>
+            )}
+            <p>
+              So với bản trước theo mức thay đổi nguồn công bố; bản giá{" "}
+              {dateLabel(market.sourceDate)}. Đây là phép tính theo ngưỡng,
+              không phải dự báo AI. Lưu tùy chọn trên thiết bị; không gửi thông
+              báo đẩy.
+            </p>
           </div>
         </section>
         <section
