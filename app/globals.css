@@ -217,20 +217,8 @@ summary {
   object-position: 50% 48%;
   filter: saturate(0.65) contrast(0.97);
 }
-.opening-photo figcaption {
-  position: absolute;
-  inset: auto 0 0;
-  background: var(--color-photo-overlay);
-  color: var(--color-sheet);
-  padding: var(--space-sm) var(--space-md);
-  font-size: 14px;
-}
-.opening-photo figcaption span {
-  display: block;
-  font-size: 11px;
-  color: var(--color-inverse-muted);
-  margin-top: var(--space-3xs);
-}
+
+
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -997,9 +985,7 @@ td {
   .opening-photo img {
     object-position: 50% 60%;
   }
-  .opening-photo figcaption {
-    font-size: 12px;
-  }
+
   .opening h1 {
     font-size: var(--text-display);
   }

@@ -301,11 +301,10 @@ export default function Dashboard({ initial }: { initial: Market }) {
           <figure className="opening-photo">
             <img
               src={assetPath("/images/coffee-farm.jpg")}
-              alt="Quả cà phê xanh trên cành, ảnh minh họa"
+              alt="Quả cà phê xanh trên cành"
               width="1280"
               height="720"
             />
-            <figcaption>Ảnh minh họa cây cà phê.</figcaption>
           </figure>
         </section>
         <section

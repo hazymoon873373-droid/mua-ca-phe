@@ -2,7 +2,6 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   calculateLot,
-  compareRegions,
   validLotRecord,
   lotCsv,
 } from "../lib/coffee/lots.mjs";
@@ -50,20 +49,6 @@ test("seller/buyer use integer VND and gram precision with no profit claim", () 
     { role: "other" },
   ])
     assert.equal(calculateLot({ ...input, ...change }), null);
-});
-test("regional comparisons use only available quotes, same volume/cost and preserve order", () => {
-  const result = compareRegions(
-    [
-      { regionId: "dak-lak", priceVndKg: 85000 },
-      { regionId: "lam-dong", priceVndKg: 84500 },
-      { regionId: "gia-lai", priceVndKg: null },
-    ],
-    input,
-  );
-  assert.equal(result.length, 2);
-  assert.equal(result[1].totalVnd, 84000000);
-  assert.equal(result[0].regionId, "dak-lak");
-  assert.deepEqual(compareRegions([], input), []);
 });
 test("saved records validate dates, bounded notes and source provenance without recalculating from live price", () => {
   assert.equal(validLotRecord(record), true);

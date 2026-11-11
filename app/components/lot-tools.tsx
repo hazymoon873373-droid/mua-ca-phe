@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   calculateLot,
-  compareRegions,
   validLotRecord,
   lotCsv,
   backupLots,
@@ -109,8 +108,7 @@ export default function LotTools({
     priceVndKg: price,
     costVnd: Number(cost),
   };
-  const result = calculateLot(input),
-    comparison = compareRegions(quotes, input);
+  const result = calculateLot(input);
   const shown = records.filter(
     (r) =>
       (roleFilter === "all" || r.role === roleFilter) &&
@@ -364,12 +362,11 @@ export default function LotTools({
           <figure className="lot-photo">
             <img
               src={assetPath("/images/green-coffee.jpg")}
-              alt="Cà phê nhân chưa rang trên bao tải, ảnh minh họa"
+              alt="Cà phê nhân chưa rang trên bao tải"
               width="1280"
               height="851"
               loading="lazy"
             />
-            <figcaption>Ảnh minh họa cà phê nhân chưa rang.</figcaption>
           </figure>
           <h3>
             {role === "sell" ? "Số tiền dự tính nhận" : "Ngân sách dự tính chi"}
@@ -418,61 +415,6 @@ export default function LotTools({
             vào kết quả.
           </p>
         </div>
-      </div>
-      <div className="lot-comparison">
-        <h3>Cùng khối lượng, so giá theo vùng.</h3>
-        <p>
-          Giá tham khảo ngày {dateLabel(sourceDate)}. Cùng khối lượng và chi phí
-          đã nhập; chưa tính khác biệt chất lượng, khoảng cách hay điều kiện của
-          từng đại lý.
-        </p>
-        {comparison.length ? (
-          <div
-            className="table-scroll"
-            role="region"
-            tabIndex={0}
-            aria-label="So sánh giá trị lô hàng theo vùng"
-          >
-            <table>
-              <caption>
-                So sánh số tiền tham khảo, không phải đề xuất chuyển vùng giao
-                dịch.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Vùng</th>
-                  <th scope="col" className="numeric">
-                    Giá tham khảo (đ/kg)
-                  </th>
-                  <th scope="col" className="numeric">
-                    {role === "sell" ? "Sau chi phí (đ)" : "Tổng chi (đ)"}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparison.map((r: { regionId: string; totalVnd: number }) => (
-                  <tr key={r.regionId}>
-                    <th scope="row">
-                      {REGIONS.find((q) => q.regionId === r.regionId)?.name}
-                    </th>
-                    <td className="numeric">
-                      {priceLabel(
-                        quotes.find((q) => q.regionId === r.regionId)!
-                          .priceVndKg,
-                      )}
-                    </td>
-                    <td className="numeric">{priceLabel(r.totalVnd)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="lot-empty">
-            Nhập khối lượng và chi phí hợp lệ để so sánh. Chỉ các vùng có báo
-            giá mới được đưa vào bảng.
-          </p>
-        )}
       </div>
       <div id="so-lo-hang" className="lot-notebook">
         <div className="lot-book-heading">

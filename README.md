@@ -9,7 +9,7 @@ Website mới theo dõi giá cà phê Robusta theo vùng, lịch sử và giá b
 - Biểu đồ tương tác bằng chuột/bàn phím, khoảng 7/30/90 ngày, 1 năm hoặc toàn bộ dữ liệu của nguồn đã chọn; tải CSV, bảng quan sát phân trang và bảng tháng có ô thiếu.
 - Tối đa năm ngưỡng giá lưu trên thiết bị, có xóa/hoàn tác. Đây là đối chiếu trong web lúc mở, chưa có thông báo đẩy.
 - Cảnh báo mức biến động phần trăm theo thay đổi mà nguồn công bố, ngưỡng 0,1–50% lưu trên thiết bị; luôn gắn ngày của bản giá.
-- Công cụ lô hàng: đổi kg/tấn, giá tham khảo hoặc giá tự nhập, tiền bán sau chi phí/ngân sách thu mua, so sánh cùng khối lượng theo vùng. Tính theo gram và đồng nguyên, không gọi số tiền sau chi phí là lợi nhuận.
+- Công cụ lô hàng: đổi kg/tấn, giá tham khảo hoặc giá tự nhập, tiền bán sau chi phí/ngân sách thu mua. Tính theo gram và đồng nguyên, không gọi số tiền sau chi phí là lợi nhuận.
 - Sổ tối đa 50 lô lưu trên trình duyệt, giữ nguyên đơn giá/ngày nguồn lúc lưu, ghi chú, tải CSV, xóa/hoàn tác; tìm ghi chú/vùng/ngày không cần dấu và lọc lô bán/thu mua. Sao lưu/nhập JSON để chuyển địa chỉ hoặc thiết bị: bỏ qua lô trùng, từ chối tệp hỏng, xung đột mã và vượt 50 lô. Không đồng bộ thiết bị; lỗi lưu được thông báo và cho tải bản trong phiên. Dữ liệu lưu hỏng không bị tự ghi đè.
 - Đã bỏ dashboard kiểm định khỏi luồng chính theo yêu cầu; các mô hình thật Prophet/XGBoost, pipeline, API và raw artifact giữ trong phần nghiên cứu. Thông tin ngắn và đường tải nằm trong mục nguồn, không cung cấp dự báo giá hiện tại chưa đủ điều kiện.
 - Giao diện Hallmark Almanac, phông Hanken Grotesk lưu cục bộ, giá dạng số thẳng cột. Hai ảnh thật minh họa cây và cà phê nhân, tác giả/giấy phép trong `public/credits.html`; không xác nhận giống hoặc địa điểm của ảnh.

@@ -50,9 +50,10 @@ try {
     "1000",
   );
   assert.match(await page.locator(".lot-total").innerText(), /85\.500\.000/);
-  assert.equal(await page.locator(".lot-comparison tbody tr").count(), 4);
+  assert.equal(await page.locator(".lot-comparison").count(), 0);
+  assert.equal(await page.locator(".opening-photo figcaption, .lot-photo figcaption").count(), 0);
   checks.push(
-    "Forecast diagnostics removed; kg/ton, sale/buy money calculation, real four-region comparison",
+    "Forecast diagnostics removed; kg/ton, sale/buy money calculation, redundant comparison and photo captions removed",
   );
   await page
     .getByRole("button", { name: "Lưu vào sổ lô hàng", exact: true })
@@ -120,7 +121,7 @@ try {
       .locator("#lo-hang")
       .screenshot({ path: `test-results/lots-${width}.png` });
   }
-  checks.push("Calculator, comparison and notebook fit four viewport widths");
+  checks.push("Calculator and notebook fit four viewport widths");
   const blocked = await browser.newContext();
   await blocked.addInitScript(() => {
     const set = Storage.prototype.setItem;
