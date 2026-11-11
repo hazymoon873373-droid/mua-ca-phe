@@ -17,6 +17,7 @@ async function enter(p, note = "Lô thử nghiệm") {
   await p
     .getByRole("spinbutton", { name: "Khối lượng", exact: true })
     .fill("1");
+  await p.getByLabel("Đơn giá (đ/kg)", { exact: true }).fill("");
   await p.getByLabel("Đơn giá (đ/kg)", { exact: true }).fill("85000");
   await p
     .getByLabel("Vận chuyển và chi phí khác (đ)", { exact: true })

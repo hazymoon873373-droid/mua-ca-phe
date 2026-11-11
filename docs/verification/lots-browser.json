@@ -1,12 +1,12 @@
 {
-  "executedAt": "2026-11-11T03:14:15.286Z",
-  "base": "http://127.0.0.1:5182/",
+  "executedAt": "2026-11-11T03:32:12.116Z",
+  "base": "https://hazymoon873373-droid.github.io/mua-ca-phe/",
   "checks": [
-    "Forecast diagnostics removed; kg/ton, sale/buy money calculation, real four-region comparison",
+    "Forecast diagnostics removed; kg/ton, sale/buy money calculation, redundant comparison and photo captions removed",
     "Saved money/provenance frozen across reload; delete/undo restores original record",
     "Actual CSV download includes record values and escapes formula notes",
     "Invalid inputs withhold result/save; reference price can be restored explicitly",
-    "Calculator, comparison and notebook fit four viewport widths",
+    "Calculator and notebook fit four viewport widths",
     "Storage quota failure retains session record and explains CSV fallback",
     "Corrupt stored data is never silently overwritten",
     "A changed stored version cannot be overwritten by an older tab"
