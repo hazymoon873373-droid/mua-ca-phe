@@ -125,3 +125,57 @@ test("future source date is rejected and fixed URL is never user-controlled", as
   assert.equal(requested, "https://giacaphe.com/gia-ca-phe-noi-dia/");
   assert.equal((await readStoredMarket(db)).regions.length, 0);
 });
+
+test("monitoring counts only completed refreshes and never cached reads as successes", async () => {
+  const db = database();
+  await syncPriceSource(db, { fetcher: async () => new Response(html), now });
+  await syncPriceSource(db, { fetcher: async () => new Response(html), now: now + 1000 });
+  await syncPriceSource(db, { fetcher: async () => new Response("Denied", { status: 403 }), now: now + 3600001 });
+  const { monitoring } = await readStoredMarket(db, { now: now + 3600001 });
+  assert.equal(monitoring.available, true);
+  assert.equal(monitoring.observedAttempts, 2);
+  assert.equal(monitoring.successfulAttempts, 1);
+  assert.equal(monitoring.failedAttempts, 1);
+  assert.equal(monitoring.successRate, 0.5);
+  assert.equal(monitoring.observedSince, "2026-11-09T15:00:00.000Z");
+  assert.deepEqual(monitoring.attempts.map((a) => [a.sourceDate, a.outcome]), [[null, "upstream_unavailable"], ["2026-11-09", "updated"]]);
+});
+
+test("a deployment before the monitoring migration still updates and reads valid prices", async () => {
+  const db = database();
+  await db.prepare("DROP TABLE refresh_attempts").run();
+  assert.equal((await syncPriceSource(db, { fetcher: async () => new Response(html), now })).refreshed, true);
+  const data = await readStoredMarket(db);
+  assert.equal(data.regions.length, 4);
+  assert.equal(data.sync.error, null);
+  assert.equal(data.monitoring.available, false);
+  assert.equal(data.monitoring.observedAttempts, 0);
+  assert.equal(data.monitoring.successRate, null);
+});
+
+test("monitoring storage errors cannot roll back good prices or turn a valid update into failure", async () => {
+  const db = database();
+  await db.prepare("CREATE TRIGGER reject_log BEFORE INSERT ON refresh_attempts BEGIN SELECT RAISE(ABORT, 'monitoring unavailable'); END").run();
+  assert.deepEqual(await syncPriceSource(db, { fetcher: async () => new Response(html), now }), { refreshed: true, reason: "updated" });
+  const data = await readStoredMarket(db);
+  assert.equal(data.regions.length, 4);
+  assert.equal(data.sync.error, null);
+  assert.equal(data.monitoring.successRate, null);
+});
+
+test("attempt history keeps at most 100 records and excludes records older than 30 days", async () => {
+  const db = database();
+  for (let i = 0; i < 105; i++) {
+    await syncPriceSource(db, { fetcher: async () => new Response(html), now: now + i * 3600001 });
+  }
+  let data = await readStoredMarket(db, { now: now + 104 * 3600001 });
+  assert.equal(data.monitoring.observedAttempts, 100);
+  assert.equal(data.monitoring.successRate, 1);
+  assert.equal(data.monitoring.attempts[99].attemptedAt, new Date(now + 5 * 3600001).toISOString());
+  const later = now + 40 * 86400000;
+  assert.equal((await readStoredMarket(db, { now: later })).monitoring.observedAttempts, 0);
+  await syncPriceSource(db, { fetcher: async () => new Response(html), now: later });
+  data = await readStoredMarket(db, { now: later });
+  assert.equal(data.monitoring.observedAttempts, 1);
+  assert.equal(data.monitoring.observedSince, new Date(later).toISOString());
+});

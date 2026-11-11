@@ -15,3 +15,10 @@ export const sourceState = sqliteTable("source_state", {
   lastSourceDate: text("last_source_date"),
   error: text("error"),
 });
+export const refreshAttempts = sqliteTable("refresh_attempts", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  source: text("source").notNull(),
+  attemptedAt: text("attempted_at").notNull(),
+  sourceDate: text("source_date"),
+  outcome: text("outcome").notNull(),
+});

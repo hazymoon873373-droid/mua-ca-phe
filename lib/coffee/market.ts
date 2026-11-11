@@ -18,6 +18,7 @@ export async function marketData() {
         sourceId: "giacaphe-snapshot",
       })),
       sync: stored.sync,
+      monitoring: stored.monitoring,
       storageReady: true,
       refresh,
       seedFallback: true,

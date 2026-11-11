@@ -1,6 +1,6 @@
 {
-  "executedAt": "2026-11-11T03:32:12.116Z",
-  "base": "https://hazymoon873373-droid.github.io/mua-ca-phe/",
+  "executedAt": "2026-11-11T03:48:56.000Z",
+  "base": "http://127.0.0.1:5182/",
   "checks": [
     "Forecast diagnostics removed; kg/ton, sale/buy money calculation, redundant comparison and photo captions removed",
     "Saved money/provenance frozen across reload; delete/undo restores original record",

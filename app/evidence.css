@@ -1,0 +1,93 @@
+/* Hallmark · existing Almanac system · source evidence disclosures */
+/* Critique: keep research behind disclosure; market prices remain primary. */
+.evidence-details {
+  border-bottom: 1px solid var(--color-rule);
+  padding-block: var(--space-md);
+}
+.evidence-details summary {
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+  padding-block: var(--space-sm);
+}
+.evidence-details p {
+  max-width: 70ch;
+  line-height: 1.65;
+}
+.evidence-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+  margin-block: var(--space-lg);
+}
+.evidence-facts dt {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+.evidence-facts dd {
+  font-family: var(--font-outlier);
+  font-size: 19px;
+  margin: var(--space-xs) 0 0;
+}
+.source-attempts {
+  list-style: none;
+  padding: 0;
+  margin-block: var(--space-md);
+}
+.source-attempts li {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding-block: var(--space-sm);
+  border-bottom: 1px solid var(--color-rule);
+  font-size: 13px;
+}
+.source-attempts time {
+  color: var(--color-muted);
+}
+.evidence-controls {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-block: var(--space-lg);
+}
+.evidence-controls label {
+  display: grid;
+  gap: var(--space-xs);
+  font-size: 13px;
+  min-width: 0;
+}
+.evidence-controls select {
+  min-height: 44px;
+  min-width: 160px;
+}
+.forecast-study table {
+  min-width: 330px;
+  width: 100%;
+}
+.forecast-study caption {
+  text-align: left;
+  padding-block: var(--space-md);
+  color: var(--color-muted);
+  font-size: 13px;
+}
+.forecast-study th,
+.forecast-study td {
+  text-align: left;
+  padding: var(--space-sm);
+}
+.forecast-study th:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--color-paper);
+}
+@media (max-width: 500px) {
+  .evidence-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .source-attempts li {
+    gap: var(--space-xs);
+    flex-direction: column;
+  }
+}

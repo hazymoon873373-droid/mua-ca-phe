@@ -9,6 +9,7 @@
 @import "./fonts.css";
 @import "./base.css";
 @import "./lot-tools.css";
+@import "./evidence.css";
 
 :root {
   --font-display: "Hanken Grotesk", sans-serif;

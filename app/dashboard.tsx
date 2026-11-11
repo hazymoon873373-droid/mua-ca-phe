@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import PriceChart from "./components/price-chart";
 import LotTools from "./components/lot-tools";
+import DataHealth from "./components/data-health";
+import ForecastStudy from "./components/forecast-study";
 import { assetPath, priceApiUrl } from "../lib/coffee/client-paths.mjs";
 import { REGIONS } from "../lib/coffee/source.mjs";
 import { sanitizeHistory, monthlyAverages } from "../lib/coffee/history.mjs";
@@ -54,6 +56,7 @@ type Market = {
   };
   seedFallback?: boolean;
   storageReady?: boolean;
+  monitoring?: Parameters<typeof DataHealth>[0]["market"]["monitoring"];
 };
 type Watch = { regionId: string; direction: string; target: number };
 const shortTime = (value: string | number) =>
@@ -881,21 +884,18 @@ export default function Dashboard({ initial }: { initial: Market }) {
             </p>
           </div>
           <div className="source-register">
-            <details>
-              <summary>Thông tin mô hình nghiên cứu</summary>
-              <p>
-                Prophet và XGBoost đã được thử nghiệm trên lịch sử Đắk Lắk và
-                Lâm Đồng. Đợt kiểm định hiện tại chưa vượt phương án giữ nguyên
-                giá gần nhất; dữ liệu huấn luyện kết thúc ngày 22/05/2026. Web
-                chưa cung cấp dự báo giá hiện tại.
-              </p>
-              <a
-                href={assetPath("/data/forecast.json")}
-                download="mua-ca-phe-ket-qua-mo-hinh.json"
-              >
-                Tải kết quả nghiên cứu mô hình
-              </a>
-            </details>
+            <DataHealth market={market} />
+            <ForecastStudy />
+            <article>
+              <div>
+                <h3>Thử nghiệm cùng người dùng</h3>
+                <p>
+                  Bộ câu hỏi, phiếu đo thời gian và kịch bản demo để nhóm kiểm
+                  chứng nhu cầu thực tế. Chưa công bố kết quả khảo sát.
+                </p>
+                <a href={assetPath("/field-kit/")}>Mở bộ tài liệu thử nghiệm</a>
+              </div>
+            </article>
             <article>
               <div>
                 <h3>Giacaphe.com / Y5Cafe</h3>
