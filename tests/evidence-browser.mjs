@@ -49,6 +49,7 @@ try {
     broken ? r.fulfill({ json: { regions: [] } }) : r.continue(),
   );
   await page.goto(base);
+  assert.equal(await page.getByRole('heading',{name:'Thử nghiệm cùng người dùng',exact:true}).count(),0);
   await page.locator("#data-quality summary").click();
   await page.waitForFunction(() =>
     document

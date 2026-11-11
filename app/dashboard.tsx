@@ -888,16 +888,6 @@ export default function Dashboard({ initial }: { initial: Market }) {
             <ForecastStudy />
             <article>
               <div>
-                <h3>Thử nghiệm cùng người dùng</h3>
-                <p>
-                  Bộ câu hỏi, phiếu đo thời gian và kịch bản demo để nhóm kiểm
-                  chứng nhu cầu thực tế. Chưa công bố kết quả khảo sát.
-                </p>
-                <a href={assetPath("/field-kit/")}>Mở bộ tài liệu thử nghiệm</a>
-              </div>
-            </article>
-            <article>
-              <div>
                 <h3>Giacaphe.com / Y5Cafe</h3>
                 <p>
                   Bảng giá nội địa công khai. Kiểm tra tối đa một lần mỗi giờ

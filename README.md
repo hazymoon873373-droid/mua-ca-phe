@@ -28,6 +28,7 @@ Chỉ lần đầu, áp dụng migration vào cơ sở dữ liệu preview:
 
 ```powershell
 node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_dusty_wolverine.sql
+node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0001_refresh_attempts.sql
 npm run dev -- --port 5182 --hostname 127.0.0.1
 ```
 
@@ -46,7 +47,7 @@ Nâng cấp 11/11/2026: `tools/forecasting/study.py` tạo `public/data/forecast
 
 Trong phần nguồn của web có hai mục mở rộng: độ mới/độ phủ/nhật ký nguồn và kết quả nghiên cứu chọn vùng/kỳ hạn, tải JSON. Nhật ký giữ tối đa 100 lượt kiểm tra đã hoàn tất trong 30 ngày, không tính lượt đọc cache hoặc suy đoán tỷ lệ hoạt động trước khi cài đặt. `drizzle/0001_refresh_attempts.sql` là migration bổ sung; Sites áp dụng khi triển khai. Thiếu bảng nhật ký hoặc lỗi ghi nhật ký không làm mất giá hợp lệ.
 
-`public/field-kit/` cung cấp phiếu phỏng vấn và đo trải nghiệm trống, CSV chỉ có tiêu đề, hướng dẫn tính chỉ số, bản nháp xin nguồn, kịch bản demo và khai báo AI. Nhóm tự thực hiện khảo sát; không có kết quả hay quyền dùng nguồn được tạo thay nhóm. Chạy `node tests/evidence-browser.mjs` với `TEST_URL` tương ứng để kiểm tra các mục này. Ngưỡng giá/biến động vẫn chỉ đối chiếu khi mở web; chưa có kênh gửi thông báo khi đóng web.
+Tài liệu nội bộ nhóm được giữ ở `public/field-kit/`, đã gỡ mục dẫn tới bộ phiếu khỏi trang chính theo yêu cầu. Ngưỡng giá/biến động vẫn chỉ đối chiếu khi mở web; chưa có kênh gửi thông báo khi đóng web. Xem `HUONG_DAN_CHAY.md` khi nhận mã nguồn qua ZIP.
 
 Đọc `tools/forecasting/README.md` để tạo môi trường Python riêng, cài phiên bản cố định, chạy kiểm tra chống rò rỉ dữ liệu và tái tạo `public/data/forecast.json`. Không có mô hình giả lập hoặc API AI trả phí. Python không chạy trong Worker; JSON được xuất sau huấn luyện rồi phát hành cùng web. Không cung cấp endpoint công khai để chạy training hoặc tải model pickle.
 
