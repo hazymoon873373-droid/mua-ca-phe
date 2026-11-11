@@ -1,5 +1,5 @@
 {
-  "executedAt": "2026-11-10T16:21:09.884Z",
+  "executedAt": "2026-11-11T03:14:15.286Z",
   "base": "http://127.0.0.1:5182/",
   "checks": [
     "Forecast diagnostics removed; kg/ton, sale/buy money calculation, real four-region comparison",

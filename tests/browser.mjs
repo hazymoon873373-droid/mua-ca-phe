@@ -125,7 +125,7 @@ try {
     route.fulfill({
       json: {
         ...market,
-        sourceDate: "2026-11-10",
+        sourceDate: market.sourceDate,
         fetchedAt: new Date(Date.now() + 1000).toISOString(),
         regions: market.regions.map((r) => ({ ...r, priceVndKg: 88000 })),
         sync: { last_attempt: 1794280000000, error: null },
@@ -217,7 +217,8 @@ try {
   );
   checks.push("Keyboard skip link reaches market");
   await page.goto(new URL("/credits.html", base).href);
-  assert.match(await page.locator("body").textContent(), /A S M Jobaer/);
+  assert.match(await page.locator("body").textContent(), /Marvin Molin/);
+  assert.match(await page.locator("body").textContent(), /DeaPeaJay/);
   assert.equal(
     (
       await context.request.get(new URL("/data/provenance.json", base).href)

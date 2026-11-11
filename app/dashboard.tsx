@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import PriceChart from "./components/price-chart";
 import LotTools from "./components/lot-tools";
+import { assetPath, priceApiUrl } from "../lib/coffee/client-paths.mjs";
 import { REGIONS } from "../lib/coffee/source.mjs";
 import { sanitizeHistory, monthlyAverages } from "../lib/coffee/history.mjs";
 import {
@@ -98,7 +99,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
     setBusy(true);
     if (manual) setRefreshNote("Đang đối chiếu bản ghi gần nhất…");
     try {
-      const response = await fetch("/api/market", {
+      const response = await fetch(priceApiUrl(), {
         method: manual ? "POST" : "GET",
         signal: AbortSignal.timeout(18000),
         cache: "no-store",
@@ -129,7 +130,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
   useEffect(() => {
     const controller = new AbortController();
     setHistoryStatus("loading");
-    fetch("/data/history.json", { signal: controller.signal })
+    fetch(assetPath("/data/history.json"), { signal: controller.signal })
       .then((r) => {
         if (!r.ok) throw new Error();
         return r.json() as Promise<{ rows: Observation[] }>;
@@ -264,7 +265,11 @@ export default function Dashboard({ initial }: { initial: Market }) {
         Đến bảng giá
       </a>
       <header className="site-header container">
-        <a href="/" className="wordmark" aria-label="Mùa Cà Phê, trang chủ">
+        <a
+          href={assetPath("")}
+          className="wordmark"
+          aria-label="Mùa Cà Phê, trang chủ"
+        >
           <span>mùa.</span>
           <span>cà phê</span>
         </a>
@@ -295,15 +300,12 @@ export default function Dashboard({ initial }: { initial: Market }) {
           </div>
           <figure className="opening-photo">
             <img
-              src="/images/roasted-coffee-beans-on-the-surface-01-1920.jpg"
-              alt="Hạt cà phê rang, ảnh minh họa"
-              width="1920"
-              height="1280"
+              src={assetPath("/images/coffee-farm.jpg")}
+              alt="Quả cà phê xanh trên cành, ảnh minh họa"
+              width="1280"
+              height="720"
             />
-            <figcaption>
-              Nhìn thị trường từ dữ liệu.
-              <span>Ảnh minh họa hạt cà phê rang.</span>
-            </figcaption>
+            <figcaption>Ảnh minh họa cây cà phê.</figcaption>
           </figure>
         </section>
         <section
@@ -889,7 +891,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
                 chưa cung cấp dự báo giá hiện tại.
               </p>
               <a
-                href="/data/forecast.json"
+                href={assetPath("/data/forecast.json")}
                 download="mua-ca-phe-ket-qua-mo-hinh.json"
               >
                 Tải kết quả nghiên cứu mô hình
@@ -947,7 +949,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
                 đại lý.
               </p>
               <a
-                href="/data/provenance.json"
+                href={assetPath("/data/provenance.json")}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -963,23 +965,7 @@ export default function Dashboard({ initial }: { initial: Market }) {
         </a>
         <p>Một góc nhìn rõ ràng hơn về thị trường cà phê Việt Nam.</p>
         <span data-credits="true">
-          Ảnh:{" "}
-          <a
-            href="https://commons.wikimedia.org/wiki/File:Roasted_coffee_beans_on_the_surface._01.jpg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            A S M Jobaer
-          </a>
-          ,{" "}
-          <a
-            href="https://creativecommons.org/licenses/by-sa/4.0/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            CC BY-SA 4.0
-          </a>
-          .
+          <a href={assetPath("/credits.html")}>Nguồn ảnh và giấy phép</a>
         </span>
         <a href="#thi-truong">
           Về bảng giá <ArrowUpRight size={14} aria-hidden="true" />

@@ -11,7 +11,7 @@
 }
 @font-face {
   font-family: "Hanken Grotesk";
-  src: url("/fonts/hanken-400.ttf") format("truetype");
+  src: url("./fonts/hanken-400.ttf") format("truetype");
   font-weight: 400;
   font-display: swap;
 }

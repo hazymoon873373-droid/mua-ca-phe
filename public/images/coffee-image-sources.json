@@ -1,0 +1,39 @@
+{
+  "images": [
+    {
+      "localPath": "/images/coffee-farm.jpg",
+      "title": "Coffee Tree.jpg",
+      "author": "Marvin Molin",
+      "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Coffee_Tree.jpg",
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Coffee_Tree.jpg/1280px-Coffee_Tree.jpg",
+      "licenseName": "Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "width": 1280,
+      "height": 720,
+      "bytes": 148834,
+      "altVi": "Chùm quả cà phê xanh trên cành giữa những tán lá.",
+      "captionVi": "Quả cà phê còn xanh trên cây — ảnh minh họa.",
+      "attribution": "Coffee Tree.jpg — Marvin Molin / Wikimedia Commons — CC BY-SA 4.0",
+      "identityNoteVi": "Trang nguồn mô tả cây cà phê nói chung; ảnh không được dùng để khẳng định giống Robusta hoặc địa điểm Việt Nam.",
+      "changes": "None. Downloaded the existing official Wikimedia 1280px thumbnail; no local editing or cropping."
+    },
+    {
+      "localPath": "/images/green-coffee.jpg",
+      "title": "Green Bean Coffee.jpg",
+      "author": "DeaPeaJay (David Joyce)",
+      "sourcePageUrl": "https://commons.wikimedia.org/wiki/File:Green_Bean_Coffee.jpg",
+      "originalSourceUrl": "https://www.flickr.com/photos/deapeajay/2215017662/",
+      "downloadUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Green_Bean_Coffee.jpg/1280px-Green_Bean_Coffee.jpg",
+      "licenseName": "Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "width": 1280,
+      "height": 851,
+      "bytes": 163854,
+      "altVi": "Hạt cà phê nhân xanh tràn từ bao đay trên mặt bàn.",
+      "captionVi": "Cà phê nhân xanh chưa rang — ảnh minh họa.",
+      "attribution": "Green Bean Coffee.jpg — DeaPeaJay (David Joyce) / Wikimedia Commons — CC BY-SA 2.0",
+      "identityNoteVi": "Trang nguồn xác nhận đây là cà phê chưa rang; không xác nhận giống hoặc nơi trồng tại Việt Nam.",
+      "changes": "None. Downloaded the existing official Wikimedia 1280px thumbnail; no local editing or cropping."
+    }
+  ]
+}

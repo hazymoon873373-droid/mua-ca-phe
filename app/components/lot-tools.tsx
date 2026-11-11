@@ -5,9 +5,12 @@ import {
   compareRegions,
   validLotRecord,
   lotCsv,
+  backupLots,
+  mergeLotBackup,
 } from "../../lib/coffee/lots.mjs";
 import { dateLabel, priceLabel } from "../../lib/coffee/analytics.mjs";
 import { REGIONS, DOMESTIC_SOURCE_URL } from "../../lib/coffee/source.mjs";
+import { assetPath } from "../../lib/coffee/client-paths.mjs";
 type Quote = { regionId: string; name: string; priceVndKg: number };
 type Lot = {
   id: string;
@@ -31,6 +34,12 @@ const today = () =>
     day: "2-digit",
   }).format(new Date());
 const money = (n: number) => priceLabel(n) + " đ";
+const normalize = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replaceAll("đ", "d");
 export default function LotTools({
   quotes,
   sourceDate,
@@ -54,6 +63,10 @@ export default function LotTools({
     [error, setError] = useState(""),
     [undo, setUndo] = useState<Lot | null>(null);
   const storedVersion = useRef<string | null>(null);
+  const recordsRef = useRef<Lot[]>([]);
+  const importInput = useRef<HTMLInputElement>(null);
+  const [query, setQuery] = useState(""),
+    [roleFilter, setRoleFilter] = useState("all");
   useEffect(() => {
     setDate(today());
     if (location.hash === "#du-bao") {
@@ -78,6 +91,7 @@ export default function LotTools({
         )
           throw Error();
         setRecords(list);
+        recordsRef.current = list;
       }
     } catch {
       setWritable(false);
@@ -97,7 +111,36 @@ export default function LotTools({
   };
   const result = calculateLot(input),
     comparison = compareRegions(quotes, input);
+  const shown = records.filter(
+    (r) =>
+      (roleFilter === "all" || r.role === roleFilter) &&
+      normalize(
+        r.note +
+          " " +
+          (REGIONS.find((q) => q.regionId === r.regionId)?.name || "") +
+          " " +
+          dateLabel(r.date),
+      ).includes(normalize(query)),
+  );
+  async function importBackup(file?: File) {
+    if (!file) return;
+    try {
+      if (file.size > 100000) throw Error("Tệp sao lưu vượt 100 KB.");
+      const merged = mergeLotBackup(await file.text(), recordsRef.current);
+      persist(merged.records);
+      setUndo(null);
+      setNotice(
+        `Đã nhập ${merged.added} lô mới; các bản trùng nội dung được giữ nguyên.`,
+      );
+      setError("");
+    } catch (e) {
+      setNotice(e instanceof Error ? e.message : "Không đọc được tệp sao lưu.");
+    } finally {
+      if (importInput.current) importInput.current.value = "";
+    }
+  }
   function persist(next: Lot[]) {
+    recordsRef.current = next;
     setRecords(next);
     if (writable)
       try {
@@ -145,15 +188,17 @@ export default function LotTools({
       "Đã thêm lô vào sổ. Giá và số tiền của bản lưu được giữ nguyên khi bảng giá thay đổi.",
     );
   }
-  function download() {
+  function download(asBackup = false) {
     const url = URL.createObjectURL(
-      new Blob(["\ufeff" + lotCsv(records)], {
-        type: "text/csv;charset=utf-8",
+      new Blob([asBackup ? backupLots(records) : "\ufeff" + lotCsv(records)], {
+        type: asBackup ? "application/json" : "text/csv;charset=utf-8",
       }),
     );
     const a = document.createElement("a");
     a.href = url;
-    a.download = "mua-ca-phe-so-lo-hang.csv";
+    a.download = asBackup
+      ? "mua-ca-phe-sao-luu.json"
+      : "mua-ca-phe-so-lo-hang.csv";
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -316,6 +361,16 @@ export default function LotTools({
           </p>
         </form>
         <div className="lot-result" aria-live="polite" aria-atomic="true">
+          <figure className="lot-photo">
+            <img
+              src={assetPath("/images/green-coffee.jpg")}
+              alt="Cà phê nhân chưa rang trên bao tải, ảnh minh họa"
+              width="1280"
+              height="851"
+              loading="lazy"
+            />
+            <figcaption>Ảnh minh họa cà phê nhân chưa rang.</figcaption>
+          </figure>
           <h3>
             {role === "sell" ? "Số tiền dự tính nhận" : "Ngân sách dự tính chi"}
           </h3>
@@ -428,15 +483,72 @@ export default function LotTools({
               Không đồng bộ giữa các thiết bị.
             </p>
           </div>
-          <button
-            type="button"
-            className="button-quiet"
-            onClick={download}
-            disabled={!records.length}
-          >
-            Tải sổ CSV
-          </button>
+          <div className="lot-book-actions">
+            <button
+              type="button"
+              className="button-quiet"
+              onClick={() => download()}
+              disabled={!records.length}
+            >
+              Tải sổ CSV
+            </button>
+            <button
+              type="button"
+              className="button-quiet"
+              disabled={!records.length}
+              onClick={() => download(true)}
+            >
+              Sao lưu JSON
+            </button>
+            <button
+              type="button"
+              className="button-quiet"
+              disabled={!loaded}
+              onClick={() => importInput.current?.click()}
+            >
+              Nhập sao lưu
+            </button>
+            <input
+              ref={importInput}
+              type="file"
+              accept=".json,application/json"
+              hidden
+              aria-label="Tệp sao lưu sổ lô hàng"
+              onChange={(e) => void importBackup(e.target.files?.[0])}
+            />
+          </div>
         </div>
+        <p className="lot-note">
+          Chuyển địa chỉ hoặc thiết bị: tải sao lưu JSON ở nơi cũ rồi nhập tại
+          đây. Tệp tải chứa toàn bộ sổ; nhập tệp sẽ không ghi đè lô đã lưu.
+        </p>
+        {!!records.length && (
+          <div className="lot-book-filters">
+            <label>
+              Tìm lô hàng
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Ghi chú, vùng hoặc ngày"
+              />
+            </label>
+            <label>
+              Lọc loại lô
+              <select
+                value={roleFilter}
+                onChange={(e) => setRoleFilter(e.target.value)}
+              >
+                <option value="all">Tất cả</option>
+                <option value="sell">Bán</option>
+                <option value="buy">Thu mua</option>
+              </select>
+            </label>
+            <span role="status">
+              {shown.length}/{records.length} lô
+            </span>
+          </div>
+        )}
         {storageIssue && (
           <p className="lot-error" role="status">
             {storageIssue}
@@ -466,9 +578,13 @@ export default function LotTools({
             Chưa có lô hàng. Tính một lô và chọn “Lưu vào sổ lô hàng” để ghi
             lại.
           </p>
+        ) : !shown.length ? (
+          <p className="lot-empty">
+            Không có lô phù hợp. Đổi từ khóa hoặc chọn “Tất cả”.
+          </p>
         ) : (
           <ol className="lot-records">
-            {records.map((r) => {
+            {shown.map((r) => {
               const v = calculateLot(r)!;
               return (
                 <li key={r.id}>

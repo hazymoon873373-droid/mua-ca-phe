@@ -10,9 +10,9 @@ Website mới theo dõi giá cà phê Robusta theo vùng, lịch sử và giá b
 - Tối đa năm ngưỡng giá lưu trên thiết bị, có xóa/hoàn tác. Đây là đối chiếu trong web lúc mở, chưa có thông báo đẩy.
 - Cảnh báo mức biến động phần trăm theo thay đổi mà nguồn công bố, ngưỡng 0,1–50% lưu trên thiết bị; luôn gắn ngày của bản giá.
 - Công cụ lô hàng: đổi kg/tấn, giá tham khảo hoặc giá tự nhập, tiền bán sau chi phí/ngân sách thu mua, so sánh cùng khối lượng theo vùng. Tính theo gram và đồng nguyên, không gọi số tiền sau chi phí là lợi nhuận.
-- Sổ tối đa 50 lô lưu trên trình duyệt, giữ nguyên đơn giá/ngày nguồn lúc lưu, ghi chú, tải CSV, xóa/hoàn tác. Không đồng bộ thiết bị; lỗi lưu được thông báo và cho tải bản trong phiên. Dữ liệu lưu hỏng không bị tự ghi đè.
+- Sổ tối đa 50 lô lưu trên trình duyệt, giữ nguyên đơn giá/ngày nguồn lúc lưu, ghi chú, tải CSV, xóa/hoàn tác; tìm ghi chú/vùng/ngày không cần dấu và lọc lô bán/thu mua. Sao lưu/nhập JSON để chuyển địa chỉ hoặc thiết bị: bỏ qua lô trùng, từ chối tệp hỏng, xung đột mã và vượt 50 lô. Không đồng bộ thiết bị; lỗi lưu được thông báo và cho tải bản trong phiên. Dữ liệu lưu hỏng không bị tự ghi đè.
 - Đã bỏ dashboard kiểm định khỏi luồng chính theo yêu cầu; các mô hình thật Prophet/XGBoost, pipeline, API và raw artifact giữ trong phần nghiên cứu. Thông tin ngắn và đường tải nằm trong mục nguồn, không cung cấp dự báo giá hiện tại chưa đủ điều kiện.
-- Giao diện Hallmark Almanac, phông Hanken Grotesk lưu cục bộ, giá dạng số thẳng cột, ảnh có attribution.
+- Giao diện Hallmark Almanac, phông Hanken Grotesk lưu cục bộ, giá dạng số thẳng cột. Hai ảnh thật minh họa cây và cà phê nhân, tác giả/giấy phép trong `public/credits.html`; không xác nhận giống hoặc địa điểm của ảnh.
 
 ## Chạy và kiểm tra
 Node >=22.13; bài kiểm tra SQLite dùng Node24 trong lần xác minh này. Chrome được dùng cho browser checks.
@@ -49,6 +49,12 @@ Mở http://127.0.0.1:5182 . Với dev server đang chạy, `npm run test:browse
 Kiểm tra bổ sung: `node --test tests/forecast.test.mjs tests/lots.test.mjs`; với preview đang chạy, `node tests/lots-browser.mjs`. Raw model artifact là kết quả nghiên cứu, không phải giá giao dịch.
 
 ## Triển khai
-Vinext/React và Cloudflare Worker, giữ tích hợp Sites trong `vite.config.ts`/`worker/index.ts`; D1 binding `DB` trong `.openai/hosting.json`. URL dự kiến (chỉ xác nhận live sau deployment thành công): https://mua-ca-phe-vn.cozyspoon36.chatgpt.site . Người dùng đã yêu cầu công khai, ai có link cũng xem được.
+Giao diện công khai chạy trên GitHub Pages tại `https://hazymoon873373-droid.github.io/mua-ca-phe/` sau khi workflow triển khai thành công. Repo: https://github.com/hazymoon873373-droid/mua-ca-phe . `.github/workflows/pages.yml` cài từ lockfile, chạy unit tests, build `dist-pages` và triển khai khi push `main`. Chạy thử giao diện tĩnh bằng `npm run build:pages`, `npm run preview:pages`; asset và dữ liệu lịch sử hỗ trợ tiền tố `/mua-ca-phe/`.
+
+API giá và lịch kiểm tra nguồn vẫn chạy trên Vinext/Cloudflare Worker tại `https://mua-ca-phe-vn.cozyspoon36.chatgpt.site/api/market`, giữ tích hợp Sites trong `vite.config.ts`/`worker/index.ts`; D1 binding `DB` trong `.openai/hosting.json`. API chỉ cấp CORS cho origin GitHub Pages đã định rõ, không gửi cookie hoặc khóa. Cả hai giao diện dùng chung bảng giá; sổ lô hàng/ngưỡng giá vẫn lưu riêng theo trình duyệt và địa chỉ. Trước khi chuyển link, mở trang cũ → Sao lưu JSON → mở trang mới → Nhập sao lưu. Ngưỡng theo dõi cần tạo lại ở địa chỉ mới.
+
+Không cần tên miền trả phí cho địa chỉ GitHub Pages. Đây là địa chỉ của nền tảng, chưa phải tên miền riêng thuộc nhóm.
 
 UI/analytics ở `app/`, `lib/coffee/analytics.mjs`; source parsing, history và sync tách module, có unit tests. Không lưu khóa trong mã hoặc tệp hosting. Mọi POST tới `/api/market` chỉ yêu cầu kiểm tra nguồn cố định, không nhận URL hay dữ liệu giá do người gọi nhập.
+
+Kiểm tra bổ sung giao diện và sao lưu: `node tests/polish-browser.mjs` (đặt `TEST_URL` để thử link Pages). Thư mục `test-results/` chỉ chứa báo cáo/ảnh cục bộ, không phát hành. Đã loại 60 component mẫu không dùng và 14 dependency trực tiếp; giữ phần tích hợp hosting/connector cần thiết.
